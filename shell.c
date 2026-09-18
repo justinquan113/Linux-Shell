@@ -6,7 +6,7 @@ int main(void){
     char input[100];
     write(1, prompt, strlen(prompt));
     
-    ssize_t n = read(0, input, sizeof(n));
+    ssize_t n = read(0, input, sizeof(input));
 
     write(1, input, n);
     
