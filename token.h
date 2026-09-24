@@ -4,6 +4,4 @@
 
 int tokenizer(char input[], int size, char *tokens[]);
 
-
-
 #endif
