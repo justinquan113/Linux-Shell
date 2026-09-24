@@ -1,12 +1,13 @@
 #include <unistd.h>
 #include <string.h>
-#include "echo.h"
+#include "prompt.h"
 #include "token.h"
-void echo(){
+void prompt(){
     char input[50];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
     char *tokens[MAX_TOKENS + 1];
+
     while(1){
         /* Write the prompt to console*/
         write(1, prompt, strlen(prompt));
@@ -37,9 +38,7 @@ void echo(){
             break;
         }
 
-        /* Add newline back and then echo input if not exit*/
-        input[n - 1] = '\n';
-        write(1, input, n);
+        int numTokens = tokenizer(input, n, tokens);
     }
 
 }
