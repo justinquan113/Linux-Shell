@@ -2,6 +2,7 @@
 #include <string.h>
 #include "echo.h"
 #include "token.h"
+#include "string.h"
 void echo(){
     char input[50];
     char *prompt = "$ ";
@@ -9,7 +10,7 @@ void echo(){
     char *tokens[MAX_TOKENS + 1];
     while(1){
         /* Write the prompt to console*/
-        write(1, prompt, strlen(prompt));
+        write(1, prompt, mystrlen(prompt));
 
         /* Read input with full buffer size*/
         ssize_t n = read(0, input, sizeof(input));
@@ -21,7 +22,7 @@ void echo(){
 
         /* Gives error if user input is too long*/
         if (input[n-1] != '\n'){
-            write(1, error, strlen(error));
+            write(1, error, mystrlen(error));
             /*drain the leftover input*/
             char discard;
             while (read(0, &discard, 1) == 1 && discard != '\n');
@@ -33,7 +34,7 @@ void echo(){
 
         /* Check for exit using strcmp and break if found,
         to be removed later*/
-        if(strcmp("exit", input) == 0){
+        if(mystrcmp("exit", input) == 0){
             break;
         }
 
