@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <string.h>
 #include "prompt.h"
 #include "token.h"
 #include "string.h"

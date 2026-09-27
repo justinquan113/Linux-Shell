@@ -1,7 +1,8 @@
 #include <unistd.h>
-#include <string.h>
+#include "string.h"
 #include "prompt.h"
 #include "token.h"
+
 void prompt(){
     char input[50];
     char *prompt = "$ ";

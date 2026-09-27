@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "string.h"
 #include "prompt.h"
 #include "token.h"
 
@@ -12,7 +13,7 @@ void run_test(const char *test_name, const char *test_input) {
     strncpy(input_buffer, test_input, sizeof(input_buffer) -1);
     input_buffer[sizeof(input_buffer) -1] = '\0';
 
-    int length = strlen(input_buffer);
+    int length = mystrlen(input_buffer);
 
     printf("Test case: %s\n", test_name);
     printf("Test input: %s\n", test_input);
