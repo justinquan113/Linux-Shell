@@ -2,7 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 int tokenizer(char input[], int size, char *tokens[]){
-    
+
     int numTokens = 0;
     int in_token = 0;
     for (int i = 0; i < size; i++){

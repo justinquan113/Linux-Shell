@@ -1,11 +1,11 @@
 #include <unistd.h>
 #include <string.h>
-#include "echo.h"
+#include "prompt.h"
 #include "token.h"
 #include "string.h"
 #include <stdio.h>
 int main(void){
-    echo();
-   
+    prompt();
+
     return 0;
 }
