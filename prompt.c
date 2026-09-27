@@ -10,7 +10,7 @@ void prompt(){
 
     while(1){
         /* Write the prompt to console*/
-        write(1, prompt, strlen(prompt));
+        write(1, prompt, mystrlen(prompt));
 
         /* Read input with full buffer size*/
         ssize_t n = read(0, input, sizeof(input));
@@ -22,7 +22,7 @@ void prompt(){
 
         /* Gives error if user input is too long*/
         if (input[n-1] != '\n'){
-            write(1, error, strlen(error));
+            write(1, error, mystrlen(error));
             /*drain the leftover input*/
             char discard;
             while (read(0, &discard, 1) == 1 && discard != '\n');
@@ -34,7 +34,7 @@ void prompt(){
 
         /* Check for exit using strcmp and break if found,
         to be removed later*/
-        if(strcmp("exit", input) == 0){
+        if(mystrcmp("exit", input) == 0){
             break;
         }
 
