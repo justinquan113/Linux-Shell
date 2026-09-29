@@ -12,14 +12,13 @@ unsigned int mystrlen(const char *s){
 
 int mystrcmp(const char *s1, const char *s2){
     int same = 0;
-    while (*s1 != '\0' || *s2 != '\0'){
+    while (*s1 != '\0' && *s2 != '\0'){
         if (*s1 != *s2){
             same = 1;
         }
         s1++;
         s2++;
     }
-    
     
     return same;
 }
