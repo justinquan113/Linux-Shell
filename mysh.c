@@ -1,6 +1,5 @@
-include "mystring.h"
+#include "string.h"
 #include "jobs.h"
-
 
 int main(int argc, char *argv[], char *envp[])
 {

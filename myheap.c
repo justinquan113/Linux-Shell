@@ -8,11 +8,18 @@ static char *freep = heap;
 
 char *alloc(unsigned int size)
 {
-  return 0;     /* TO DO */
+  if (size == 0 || size > HEAP_SIZE) {
+      return 0;
+  } else if (freep + size > heap + HEAP_SIZE) {
+      return 0;
+  } else {
+  char *next_available = freep;
+  freep += size;
+  return next_available;
+  }
 }
-
 
 void free_all()
 {
-  /* TO DO */
+  freep = heap;
 }
