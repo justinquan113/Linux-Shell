@@ -2,6 +2,7 @@
 #include "string.h"
 #include "prompt.h"
 #include "token.h"
+#include "myheap.h"
 
 void prompt(){
     char input[50];
@@ -10,6 +11,8 @@ void prompt(){
     char *tokens[MAX_TOKENS + 1];
 
     while(1){
+        free_all();
+
         /* Write the prompt to console*/
         write(1, prompt, mystrlen(prompt));
 
@@ -32,6 +35,11 @@ void prompt(){
 
         /* Replace newline with null terminator to properly compare*/
         input[n-1] = '\0';
+        
+        // Ignore empty input
+        if (input[0] == '\0'){
+            continue;
+        }
 
         /* Check for exit using strcmp and break if found,
         to be removed later*/

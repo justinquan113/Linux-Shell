@@ -8,9 +8,7 @@ static char *freep = heap;
 
 char *alloc(unsigned int size)
 {
-  if (size == 0 || size > HEAP_SIZE) {
-      return 0;
-  } else if (freep + size > heap + HEAP_SIZE) {
+  if (size == 0 || size > HEAP_SIZE || freep + size > heap + HEAP_SIZE) {
       return 0;
   } else {
   char *next_available = freep;
