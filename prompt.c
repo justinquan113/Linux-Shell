@@ -3,8 +3,9 @@
 #include "prompt.h"
 #include "token.h"
 #include "myheap.h"
+#include "jobs.h"
 
-void prompt(){
+void get_command(struct Command *command){
     char input[50];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
@@ -47,7 +48,9 @@ void prompt(){
             break;
         }
 
-        int numTokens = tokenizer(input, n, tokens);
+        command->argc = tokenizer(input, n, command->argv);
+
+        break;
     }
 
 }
