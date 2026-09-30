@@ -1,5 +1,5 @@
 #ifndef PROMPT_H
 #define PROMPT_H
 
-void prompt();
+void get_command(struct Command *command);
 #endif

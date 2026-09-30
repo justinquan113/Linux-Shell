@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include "jobs.h"
 #include "string.h"
 #include "prompt.h"
 #include "token.h"
@@ -9,8 +10,8 @@ void get_command(struct Command *command){
     char input[50];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
-    char *tokens[MAX_TOKENS + 1];
 
+    /* loop should only repeat unless user just presses enter or input was invalid */
     while(1){
         free_all();
 
@@ -42,13 +43,13 @@ void get_command(struct Command *command){
             continue;
         }
 
+        command->argc = tokenizer(input, n, command->argv);
+        
         /* Check for exit using strcmp and break if found,
         to be removed later*/
         if(mystrcmp("exit", input) == 0){
             break;
         }
-
-        command->argc = tokenizer(input, n, command->argv);
 
         break;
     }
