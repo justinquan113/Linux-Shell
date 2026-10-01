@@ -1,15 +1,17 @@
 #include <unistd.h>
+#include "jobs.h"
 #include "string.h"
 #include "prompt.h"
 #include "token.h"
 #include "myheap.h"
+#include "jobs.h"
 
-void prompt(){
+void get_command(struct Command *command){
     char input[50];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
-    char *tokens[MAX_TOKENS + 1];
 
+    /* loop should only repeat unless user just presses enter or input was invalid */
     while(1){
         free_all();
 
@@ -41,13 +43,15 @@ void prompt(){
             continue;
         }
 
+        command->argc = tokenizer(input, n, command->argv);
+        
         /* Check for exit using strcmp and break if found,
         to be removed later*/
         if(mystrcmp("exit", input) == 0){
             break;
         }
 
-        int numTokens = tokenizer(input, n, tokens);
+        break;
     }
 
 }
