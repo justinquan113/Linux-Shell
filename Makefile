@@ -11,11 +11,17 @@ mysh: mysh.o $(OBJS)
 tokentest: tokenizer_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
 
+stringtest: string_test.o $(OBJS)
+	$(CC) $(CFLAGS) -o stringtest string_test.o $(OBJS)
+
 mysh.o: mysh.c string.h jobs.h execute.h prompt.h
 	$(CC) $(CFLAGS) -c mysh.c
 
 tokenizer_test.o: tokenizer_test.c prompt.h token.h
 	$(CC) $(CFLAGS) -c tokenizer_test.c
+
+string_test.o: string.h string.c string_test.c
+	$(CC) $(CFLAGS) -c string_test.c
 
 execute.o: execute.c execute.h jobs.h string.h
 	$(CC) $(CFLAGS) -c execute.c
