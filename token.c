@@ -39,7 +39,10 @@ int tokenizer(char input[], int size, char *tokens[]){
         }
 
     }
+
+    /* execve walks argv until it finds a null pointer, so the caller's
+       array must be terminated, not just counted */
+    tokens[numTokens] = 0;
+
     return numTokens;
 }
-        
- 

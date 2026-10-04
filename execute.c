@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 
 void run_command(struct Command *command, char *envp[]) {
-    
+   
     pid_t pid = fork();
 
     if (pid <0) {
@@ -16,6 +16,7 @@ void run_command(struct Command *command, char *envp[]) {
 
     if (pid == 0) {
         execve(command->argv[0], command->argv, envp);
+    
 
         char *error = "Error with execve, process should have been replaced\n";
         write (1, error, mystrlen(error));
