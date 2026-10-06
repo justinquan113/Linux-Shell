@@ -4,6 +4,7 @@
 #include "string.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdio.h>
 
 void run_command(struct Command *command, char *envp[]) {
    
@@ -14,14 +15,27 @@ void run_command(struct Command *command, char *envp[]) {
         write(1, error, mystrlen(error));
     }
 
-    if (pid == 0) {
+    else if (pid == 0) {
+      
         execve(command->argv[0], command->argv, envp);
     
 
         char *error = "Error with execve, process should have been replaced\n";
         write (1, error, mystrlen(error));
         _exit(1);
-    } else {
-        waitpid(pid, NULL, 0);
+    } 
+
+    else {
+
+        /*skip parent waiting for child process*/
+        if(command->is_background == 1){
+            printf("Background PID: %d\n", pid);
+        }
+
+        else{
+            waitpid(pid, NULL, 0);
+        }
+        
+       
     }
 }
