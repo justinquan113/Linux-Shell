@@ -7,6 +7,7 @@ struct Command
 {
   char *argv[MAX_ARGS+1];
   unsigned int argc;
+  int is_background;
 };
 
 #endif
