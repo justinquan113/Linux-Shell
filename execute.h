@@ -2,6 +2,6 @@
 #define EXECUTE_H
 #include "jobs.h"
 
-void run_command(struct Command *command, char *envp[]);
+void run_command(struct Command *command, char *envp[], int background);
 
 #endif

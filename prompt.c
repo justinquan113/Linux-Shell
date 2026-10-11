@@ -6,7 +6,7 @@
 #include "myheap.h"
 #include "jobs.h"
 
-void get_command(struct Command *command){
+int get_command(struct Command *command){
     char input[50];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
@@ -23,7 +23,9 @@ void get_command(struct Command *command){
 
         /* Stop on end of input or read error*/
         if (n <= 0){
-            break;
+            command->argc = 0;
+            command->argv[0] = 0;
+            return 0;
         }
 
         /* Gives error if user input is too long*/
@@ -54,4 +56,5 @@ void get_command(struct Command *command){
         break;
     }
 
+    return 1;
 }
