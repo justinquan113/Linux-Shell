@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-void run_command(struct Command *command, char *envp[]) {
+void run_command(struct Command *command, char *envp[], int background) {
    
     pid_t pid = fork();
 
@@ -28,7 +28,7 @@ void run_command(struct Command *command, char *envp[]) {
     else {
 
         /*skip parent waiting for child process*/
-        if(command->is_background == 1){
+        if(background == 1){
             printf("Background PID: %d\n", pid);
         }
 

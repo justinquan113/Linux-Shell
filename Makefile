@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -g -O0 -std=gnu11
 
-OBJS = execute.o myheap.o prompt.o string.o token.o
+OBJS = execute.o myheap.o prompt.o string.o token.o jobs.o
 
 all: mysh
 
@@ -14,6 +14,9 @@ tokentest: tokenizer_test.o $(OBJS)
 stringtest: string_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o stringtest string_test.o $(OBJS)
 
+jobtest: jobs_test.o $(OBJS)
+	$(CC) $(CFLAGS) -o jobtest jobs_test.o $(OBJS)
+
 mysh.o: mysh.c string.h jobs.h execute.h prompt.h
 	$(CC) $(CFLAGS) -c mysh.c
 
@@ -22,6 +25,12 @@ tokenizer_test.o: tokenizer_test.c prompt.h token.h
 
 string_test.o: string.h string.c string_test.c
 	$(CC) $(CFLAGS) -c string_test.c
+
+jobs_test.o: jobs.h jobs.c jobs_test.c
+	$(CC) $(CFLAGS) -c jobs_test.c
+
+jobs.o: jobs.c jobs.h string.h token.h prompt.h
+	$(CC) $(CFLAGS) -c jobs.c
 
 execute.o: execute.c execute.h jobs.h string.h
 	$(CC) $(CFLAGS) -c execute.c
