@@ -8,6 +8,24 @@ all: mysh
 mysh: mysh.o $(OBJS)
 	$(CC) $(CFLAGS) -o mysh mysh.o $(OBJS)
 
+test-tokenizer: test_files/test_tokenizer.c token.c string.c myheap.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_tokenizer
+
+test-string: test_files/test_string.c string.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_string
+
+test-heap: test_files/test_heap.c myheap.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_heap
+
+#test-job: test_files/test_job.c jobs.c
+#$(CC) $(CFLAGS)  -I. $^ -o test_job
+	
+#Need to add test for jobs.c
+test: test-string test-heap test-tokenizer
+	./test_string
+	./test_heap
+	./test_tokenizer
+
 tokentest: tokenizer_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
 
@@ -48,6 +66,6 @@ token.o: token.c token.h string.h myheap.h
 	$(CC) $(CFLAGS) -c token.c
 
 clean:
-	rm -f mysh tokentest *.o
+	rm -f mysh test_string test_heap test_tokenizer tokentest stringtest jobtest *.o
 
 .PHONY: all clean
