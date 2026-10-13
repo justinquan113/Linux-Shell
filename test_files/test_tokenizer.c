@@ -83,7 +83,13 @@ int main(void) {
 
     const char *test4[] = {"echo", "hello", "world"};
 
-    const char *test5[] = {"echo"};
+    const char *test5[] = {"echo", "&"};
+
+    const char *test6[] = {"cat", "file.txt", "|", "wc", "-l"};
+
+    const char *test7[] = {"sort", "<", "input.txt", ">", "output.txt"};
+
+    const char *test8[] = {"echo", "hello", "&"};
 
     run_test(
         "Normal command",
@@ -102,5 +108,11 @@ int main(void) {
 
     run_test("Empty input", "", 0, NULL);
 
+    run_test("Pipeline", "cat file.txt | wc -l", 5, test6);
+
+    run_test("Input and output redirection", "sort < input.txt > output.txt", 5, test7);
+
+    run_test("Background marker with arguments", "echo hello &", 3, test8);
+    
     return 0;
 }

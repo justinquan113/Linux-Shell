@@ -14,14 +14,16 @@ struct Job
 {
   struct Command pipeline[MAX_PIPELINE_LEN];
   unsigned int num_stages;
-  char *outfile_path;
-  char *infile_path;
-  int background;
+  char *outfile_path; /* NULL if no output redirection */
+  char *infile_path; /* NULL if no input redirection */
+  int background;  /* 0 = foreground, else background */
 };
 
 void run_job(struct Job *job, char *envp[]);
 
 /* returns 1 if a job was read, 0 on end of input */
 int get_job(struct Job *job);
+
+
 
 #endif
