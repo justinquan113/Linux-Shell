@@ -11,5 +11,6 @@ char *mystrcpy(char *dest, const char *src);
 
 /* converts n to digits inside buf and returns a pointer to the first one */
 char *myitoa(int n, char *buf, unsigned int size);
+char *mystrcat(char *dest, const char*src);
 
 #endif
