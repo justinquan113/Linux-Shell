@@ -24,4 +24,7 @@ void run_job(struct Job *job, char *envp[]);
 /* returns 1 if a job was read, 0 on end of input */
 int get_job(struct Job *job);
 
+/* forks and execs one stage; returns the child's pid, or -1 on failure */
+int spawn_child_process(struct Command *command, int in_fd, int out_fd, int close_fd, char *envp[]);
+
 #endif
