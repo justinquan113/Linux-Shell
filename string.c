@@ -32,3 +32,22 @@ char *mystrcpy(char *dest, const char *src){
     dest[i] = '\0';
     return dest;
 }
+
+char *mystrcat(char *dest, const char*src) {
+    int i = 0;
+    int j = 0;
+
+    // go to end of the destination string
+    while (dest[i] != '\0') {
+        i++;
+    }
+
+    while (src[j] != '\0') {
+        dest[i] = src[j];
+        i++;
+        j++;
+    }
+
+    dest[i] = '\0';
+    return dest;
+}
