@@ -11,6 +11,9 @@ int main(int argc, char *argv[], char *envp[]){
   int exitShell = 0;
   struct Job job;
 
+
+
+
   while (!exitShell){
     /* collect any background children that finished since the last prompt */
     while (waitpid(-1, NULL, WNOHANG) > 0){
