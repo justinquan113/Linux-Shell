@@ -78,45 +78,72 @@ void run_job(struct Job *job, char *envp[]){
         }
     }
 
-    /*Two stage pipeline*/
+    /*n stage pipeline*/
     else{
         char *err_pipe = "Could not create the pipe\n";
 
-        if(pipe(pipefd) < 0){
-            write(2, err_pipe, mystrlen(err_pipe));
+        /*saves the previous pipe read end*/
+        int prev_read_fd;
+        for (unsigned int i = 0; i < job->num_stages; i++){
+            int pid;
 
-            if(in_fd != STDIN_FILENO){
-                close(in_fd);
+            /*the last stage writes to out_fd, so it needs no pipe of its own*/
+            if(i < job->num_stages - 1){
+                if(pipe(pipefd) < 0){
+                    write(2, err_pipe, mystrlen(err_pipe));
+
+                    if(in_fd != STDIN_FILENO){
+                        close(in_fd);
+                    }
+
+                    if(out_fd != STDOUT_FILENO){
+                        close(out_fd);
+                    }
+
+                    return;
+                }
+            }
+            
+            /*First stage always writes*/
+            if(i == 0){
+                pid = spawn_child_process(&job->pipeline[i], in_fd, pipefd[1], pipefd[0], envp);
+                if(pid >= 0){
+                    pids[num_pids] = pid;
+                    num_pids++;
+                }
+
+                /*close write end*/
+                close(pipefd[1]);
+                /*save the read end for next stage*/
+                prev_read_fd = pipefd[0];
             }
 
-            if(out_fd != STDOUT_FILENO){
-                close(out_fd);
+            /*Last stage always reads*/
+            else if(i == job->num_stages - 1){
+                pid = spawn_child_process(&job->pipeline[i], prev_read_fd, out_fd, -1, envp);
+                if(pid >= 0){
+                    pids[num_pids] = pid;
+                    num_pids++;
+                }
+                /*close read end*/
+                close(prev_read_fd);
             }
 
-            return;
+            /*middle stages read and writes*/
+            else{
+
+                pid = spawn_child_process(&job->pipeline[i], prev_read_fd, pipefd[1], pipefd[0], envp);
+                if(pid >=0){
+                    pids[num_pids] = pid;
+                    num_pids++;
+                }
+                close(prev_read_fd);
+                close(pipefd[1]);
+                /*save the read end for the next stage*/
+                prev_read_fd = pipefd[0];
+
+            }
         }
-
-        /* stage 0 writes into the pipe*/
-        int pid1 = spawn_child_process(&job->pipeline[0], in_fd, pipefd[1], pipefd[0], envp);
-
-        if(pid1 >= 0){
-            pids[num_pids] = pid1;
-            num_pids++;
-        }
-
-        /* close write end*/
-        close(pipefd[1]);
-
-        /*stage 1 read from the pipe*/
-        int pid2 = spawn_child_process(&job->pipeline[1], pipefd[0], out_fd, -1, envp);
-
-        if(pid2 >= 0){
-            pids[num_pids] = pid2;
-            num_pids++;
-        }
-
-        /*close read end*/
-        close(pipefd[0]);
     }
 
     /* the children have their own copies now, so drop the parent's */
@@ -178,12 +205,14 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
             close(out_fd);
         }
 
-        /*an inherited pipe end this stage does not use; leaving it open would
-          keep the pipe from ever reporting end of input*/
+        /*close pipe end that is not being used*/
         if(close_fd >= 0){
             close(close_fd);
         }
 
+        if (command->argv[0][0] != '/' && command->argv[0][0] != '.') {
+            command-> argv[0] = resolve_path(command->argv[0], envp);
+        }
         execve(command->argv[0], command->argv, envp);
 
         char *error = "Error with execve, process should have been replaced\n";
