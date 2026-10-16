@@ -8,6 +8,8 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "parser.h"
+
 
 int get_job(struct Job *job){
 
@@ -19,10 +21,11 @@ int get_job(struct Job *job){
         return 0;
     }
 
-    job->num_stages = 1;
-    job->infile_path = NULL;
-    job->outfile_path = NULL;
-    job->background = 0;
+    int parse_result = parse_pipeline(job);
+
+    if (parse_result == -1) {
+        return 0;
+    }
 
     return 1;
 }

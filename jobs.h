@@ -14,9 +14,9 @@ struct Job
 {
   struct Command pipeline[MAX_PIPELINE_LEN];
   unsigned int num_stages;
-  char *outfile_path;
-  char *infile_path;
-  int background;
+  char *outfile_path; /* NULL if no output redirection */
+  char *infile_path; /* NULL if no input redirection */
+  int background;  /* 0 = foreground, else background */
 };
 
 void run_job(struct Job *job, char *envp[]);
@@ -26,5 +26,6 @@ int get_job(struct Job *job);
 
 /* forks and execs one stage; returns the child's pid, or -1 on failure */
 int spawn_child_process(struct Command *command, int in_fd, int out_fd, int close_fd, char *envp[]);
+
 
 #endif
