@@ -1,6 +1,6 @@
 #ifndef JOBS_H
 #define JOBS_H
-#define MAX_PIPELINE_LEN 2
+#define MAX_PIPELINE_LEN 10
 #define MAX_ARGS 10
 
 struct Command
