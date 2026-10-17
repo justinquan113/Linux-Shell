@@ -7,7 +7,7 @@
 #include "jobs.h"
 
 int get_command(struct Command *command){
-    char input[50];
+    char input[100];
     char *prompt = "$ ";
     char *error = "Please enter a shorter command\n";
 

@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -g -O0 -std=gnu11
 
-OBJS = execute.o myheap.o prompt.o string.o token.o jobs.o
+OBJS = execute.o myheap.o prompt.o string.o token.o jobs.o parser.o
 
 all: mysh
 
