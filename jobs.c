@@ -1,6 +1,5 @@
 #include "jobs.h"
 #include <unistd.h>
-#include <stdio.h>
 #include "string.h"
 #include "token.h"
 #include "prompt.h"
@@ -9,7 +8,20 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "parser.h"
+#include <errno.h>
+char *strerror(int errnum);
 
+void print_err_string(const char *context) {
+    char *err_string = strerror(errno);
+    char msg[100];
+    
+    mystrcpy(msg, context);
+    mystrcat(msg, ": ");
+    mystrcat(msg, err_string);
+    mystrcat(msg, "\n");
+
+    write(2, msg, mystrlen(msg));
+}
 
 int get_job(struct Job *job){
 
@@ -64,7 +76,9 @@ void run_job(struct Job *job, char *envp[]){
             write(2, err_open, mystrlen(err_open));
 
             if(in_fd != STDIN_FILENO){
-                close(in_fd);
+                if (close(in_fd) < 0) {
+                    print_err_string("close in_fd failed");
+                }
             }
 
             return;
@@ -83,7 +97,6 @@ void run_job(struct Job *job, char *envp[]){
 
     /*n stage pipeline*/
     else{
-        char *err_pipe = "Could not create the pipe\n";
 
         /*saves the previous pipe read end*/
         int prev_read_fd;
@@ -93,14 +106,18 @@ void run_job(struct Job *job, char *envp[]){
             /*the last stage writes to out_fd, so it needs no pipe of its own*/
             if(i < job->num_stages - 1){
                 if(pipe(pipefd) < 0){
-                    write(2, err_pipe, mystrlen(err_pipe));
+                    print_err_string("pipe failed");
 
                     if(in_fd != STDIN_FILENO){
-                        close(in_fd);
+                        if (close(in_fd) < 0) {
+                            print_err_string("close in_fd failed");
+                        }
                     }
 
                     if(out_fd != STDOUT_FILENO){
-                        close(out_fd);
+                        if (close(out_fd) < 0) {
+                            print_err_string("close out_fd failed");
+                        }
                     }
 
                     return;
@@ -116,7 +133,10 @@ void run_job(struct Job *job, char *envp[]){
                 }
 
                 /*close write end*/
-                close(pipefd[1]);
+                if (close(pipefd[1]) < 0) {
+                    print_err_string("close pipe write end failed");
+                }
+                
                 /*save the read end for next stage*/
                 prev_read_fd = pipefd[0];
             }
@@ -129,7 +149,9 @@ void run_job(struct Job *job, char *envp[]){
                     num_pids++;
                 }
                 /*close read end*/
-                close(prev_read_fd);
+                if (close(prev_read_fd) < 0) {
+                    print_err_string("close prev_read_fd failed");
+                }
             }
 
             /*middle stages read and writes*/
@@ -140,8 +162,12 @@ void run_job(struct Job *job, char *envp[]){
                     pids[num_pids] = pid;
                     num_pids++;
                 }
-                close(prev_read_fd);
-                close(pipefd[1]);
+                if (close(prev_read_fd) < 0) {
+                    print_err_string("close prev_read_fd failed");
+                }
+                if (close(pipefd[1]) < 0) {
+                    print_err_string("close pipe write end failed");
+                }
                 /*save the read end for the next stage*/
                 prev_read_fd = pipefd[0];
 
@@ -151,12 +177,16 @@ void run_job(struct Job *job, char *envp[]){
 
     /* the children have their own copies now, so drop the parent's */
     if(in_fd != STDIN_FILENO){
-        close(in_fd);
+        if (close(in_fd) < 0) {
+            print_err_string("close parent in_fd failed");
+        }
     }
 
 
     if(out_fd != STDOUT_FILENO){
-        close(out_fd);
+        if (close(out_fd) < 0) {
+            print_err_string("close parent out_fd failed");
+        }
     }
 
     /* skip the wait for background jobs; mysh reaps them at the next prompt */
@@ -177,7 +207,9 @@ void run_job(struct Job *job, char *envp[]){
     else{
         /* every stage has to be waited on, not just the last */
         for(int i = 0; i < num_pids; i++){
-            waitpid(pids[i], NULL, 0);
+            if (waitpid(pids[i], NULL, 0) < 0) {
+                print_err_string("waitpid failed");
+            }
         }
     }
 }
@@ -198,19 +230,30 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
 
         /*redirect the infile fd to stdin*/
         if(in_fd != STDIN_FILENO){
-            dup2(in_fd, STDIN_FILENO);
-            close(in_fd);
+            if (dup2(in_fd, STDIN_FILENO) < 0) {
+                print_err_string("dup2 stdin failed");
+            }
+            if (close(in_fd) < 0) {
+                print_err_string("close in_fd failed");
+            }
         }
 
         /*redirect the outfile fd to stdout*/
         if(out_fd != STDOUT_FILENO){
-            dup2(out_fd, STDOUT_FILENO);
-            close(out_fd);
+            if (dup2(out_fd, STDOUT_FILENO) < 0) {
+                print_err_string("dup2 stdout failed");
+            }
+
+            if (close(out_fd)) {
+                print_err_string("close out_fd failed");
+            }
         }
 
         /*close pipe end that is not being used*/
         if(close_fd >= 0){
-            close(close_fd);
+            if (close(close_fd) < 0) {
+                print_err_string("close unused pipe end failed");
+            }
         }
 
         if (command->argv[0][0] != '/' && command->argv[0][0] != '.') {
@@ -225,5 +268,3 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
 
     return pid;
 }
-
-
