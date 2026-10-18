@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "parser.h"
 #include "jobs.h"
 #include "string.h"
@@ -7,6 +6,7 @@
 #define IN_REDIRECT "<"
 #define OUT_REDIRECT ">"
 #define BACKGROUND "&"
+#define NULL '\0'
 
 /* Take in job struct and parse the pipeline into the job struct. */
 /* Currently assumes there will be a space within instructions eg. "ls -l | grep .c"  not "ls -l|grep .c" */
