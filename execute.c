@@ -44,7 +44,7 @@ char *resolve_path(char *command, char*envp[]) {
                 unsigned int directory_len = mystrlen(directory);
 
                 // +2 to make space for / and \0
-                char *final_path = alloc(directory_len + command_len + 1);
+                char *final_path = alloc(directory_len + command_len + 2);
                 if (final_path != 0) {
                     mystrcat(final_path, directory);
                     mystrcat(final_path, "/");
@@ -59,37 +59,7 @@ char *resolve_path(char *command, char*envp[]) {
             directory = &path_copy[i + 1];
         }
     }
+
+    return 0;
 }
-void run_command(struct Command *command, char *envp[], int background) {
-   
-    pid_t pid = fork();
 
-    if (pid <0) {
-        char *error = "fork did not work in run command\n";
-        write(1, error, mystrlen(error));
-    }
-
-    else if (pid == 0) {
-      
-        if (command->argv[0][0] != '/' && command->argv[0][0] != '.') {
-            command-> argv[0] = resolve_path(command->argv[0], envp);
-        }
-
-        execve(command->argv[0], command->argv, envp);
-    
-
-        char *error = "Error with execve, process should have been replaced\n";
-        write (1, error, mystrlen(error));
-        _exit(1);
-    } 
-
-    else {
-        /*skip parent waiting for child process*/
-        if(background == 1){
-            printf("Background PID: %d\n", pid);
-        }
-        else{
-            waitpid(pid, NULL, 0);
-        }
-    }
-}

@@ -214,7 +214,18 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
         }
 
         if (command->argv[0][0] != '/' && command->argv[0][0] != '.') {
-            command-> argv[0] = resolve_path(command->argv[0], envp);
+            char *resolved = resolve_path(command->argv[0], envp);
+
+            /*nothing on PATH matched, so there is no point calling execve*/
+            if (resolved == 0) {
+                char *not_found = ": command not found\n";
+
+                write(2, command->argv[0], mystrlen(command->argv[0]));
+                write(2, not_found, mystrlen(not_found));
+                _exit(127);
+            }
+
+            command->argv[0] = resolved;
         }
         execve(command->argv[0], command->argv, envp);
 
