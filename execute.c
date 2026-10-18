@@ -66,8 +66,7 @@ void run_command(struct Command *command, char *envp[], int background) {
     pid_t pid = fork();
 
     if (pid <0) {
-        char *error = "fork did not work in run command\n";
-        write(1, error, mystrlen(error));
+        print_err_string("fork failed in run command");
     }
 
     else if (pid == 0) {
@@ -79,8 +78,7 @@ void run_command(struct Command *command, char *envp[], int background) {
         execve(command->argv[0], command->argv, envp);
     
 
-        char *error = "Error with execve, process should have been replaced\n";
-        write (1, error, mystrlen(error));
+        print_err_string(command->argv[0]);
         _exit(1);
     } 
 

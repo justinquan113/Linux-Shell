@@ -16,13 +16,23 @@ int get_command(struct Command *command){
         free_all();
 
         /* Write the prompt to console*/
-        write(1, prompt, mystrlen(prompt));
+        if (write(1, prompt, mystrlen(prompt)) < 0) {
+            print_err_string("write prompt failed");
+            return 0;
+        }
 
         /* Read input with full buffer size*/
         ssize_t n = read(0, input, sizeof(input));
 
         /* Stop on end of input or read error*/
-        if (n <= 0){
+        if (n < 0){
+            print_err_string("read input failed");
+            command->argc = 0;
+            command->argv[0] = 0;
+            return 0;
+        }
+
+        if (n == 0) {
             command->argc = 0;
             command->argv[0] = 0;
             return 0;
@@ -30,7 +40,9 @@ int get_command(struct Command *command){
 
         /* Gives error if user input is too long*/
         if (input[n-1] != '\n'){
-            write(1, error, mystrlen(error));
+            if (write(2, error, mystrlen(error)) < 0) {
+                print_err_string("write error failed");
+            }
             /*drain the leftover input*/
             char discard;
             while (read(0, &discard, 1) == 1 && discard != '\n');
