@@ -44,9 +44,9 @@ char *resolve_path(char *command, char*envp[]) {
                 unsigned int directory_len = mystrlen(directory);
 
                 // +2 to make space for / and \0
-                char *final_path = alloc(directory_len + command_len + 1);
+                char *final_path = alloc(directory_len + command_len + 2);
                 if (final_path != 0) {
-                    mystrcat(final_path, directory);
+                    mystrcpy(final_path, directory);
                     mystrcat(final_path, "/");
                     mystrcat(final_path, command);
 
@@ -59,6 +59,7 @@ char *resolve_path(char *command, char*envp[]) {
             directory = &path_copy[i + 1];
         }
     }
+    return command;
 }
 void run_command(struct Command *command, char *envp[], int background) {
    
