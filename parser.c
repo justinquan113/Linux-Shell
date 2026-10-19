@@ -26,7 +26,7 @@ int parse_pipeline(struct Job *job)
 
 
     /* Copy tokens into temporary array */
-    while (*ptr != NULL && count < MAX_ARGS) {
+    while (*ptr != 0 && count < MAX_ARGS) {
         input_tokens[count++] = *ptr;
         ptr++;
     }

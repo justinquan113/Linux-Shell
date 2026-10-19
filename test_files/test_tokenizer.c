@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include "mystring.h"
 #include "token.h"
 #include "myheap.h"
 
@@ -17,7 +17,7 @@ void run_test(
     free_all();
 
     /* Copy input safely */
-    size_t length = strlen(test_input);
+    size_t length = mystrlen(test_input);
 
     if (length >= sizeof(input_buffer)) {
         printf("FAIL: %s - input too long for test buffer\n\n",
@@ -25,7 +25,7 @@ void run_test(
         return;
     }
 
-    strcpy(input_buffer, test_input);
+    mystrcpy(input_buffer, test_input);
 
     printf("Test case: %s\n", test_name);
     printf("Test input: \"%s\"\n", test_input);
@@ -47,7 +47,7 @@ void run_test(
     if (num_tokens == expected_count) {
         for (int i = 0; i < expected_count; i++) {
             if (tokens[i] == NULL ||
-                strcmp(tokens[i], expected_tokens[i]) != 0) {
+                mystrcmp(tokens[i], expected_tokens[i]) != 0) {
                 printf("FAIL: token %d incorrect\n", i);
                 passed = 0;
             } else {
