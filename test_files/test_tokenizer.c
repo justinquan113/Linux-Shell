@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "string.h"
+#include "mystring.h"
 #include "token.h"
 #include "myheap.h"
 

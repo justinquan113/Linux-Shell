@@ -1,4 +1,4 @@
-#include "string.h"
+#include "mystring.h"
 
 unsigned int mystrlen(const char *s){
     int count = 0;

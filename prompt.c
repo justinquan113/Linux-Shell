@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include "jobs.h"
-#include "string.h"
+#include "mystring.h"
 #include "prompt.h"
 #include "token.h"
 #include "myheap.h"
