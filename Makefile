@@ -20,15 +20,24 @@ test-heap: test_files/test_heap.c myheap.c
 test-parser: test_files/test_parser.c jobs.c mystring.c parser.c prompt.c token.c myheap.c execute.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_parser
 
+test-run_job: test_files/test_run_job.c jobs.c mystring.c parser.c prompt.c token.c myheap.c execute.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_run_job
+
+# build and run just this one suite
+run-job: test-run_job
+	./test_run_job
+
+
 #test-job: test_files/test_job.c jobs.c
 #$(CC) $(CFLAGS)  -I. $^ -o test_job
 	
 #Need to add test for jobs.c
-test: test-string test-heap test-tokenizer test-parser
+test: test-string test-heap test-tokenizer test-parser test-run_job
 	./test_string
 	./test_heap
 	./test_tokenizer
 	./test_parser
+	./test_run_job
 
 tokentest: tokenizer_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
@@ -75,4 +84,4 @@ parser.o: parser.c parser.h jobs.h mystring.h
 clean:
 	rm -f mysh test_string test_heap test_tokenizer test_parser tokentest stringtest jobtest *.o
 
-.PHONY: all clean
+.PHONY: all clean test run-job

@@ -43,7 +43,7 @@ int main(int argc, char *argv[], char *envp[]){
     /* an input file the test owns, so the expected count comes from how it
        was built rather than from whatever happens to be on this machine.
        3 of the 5 lines contain "bin" */
-    char *eg4_input = "bin1\nlib\nbin2\nusr\nbin3\n";
+
     int in = open("eg4_in.txt", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
     write(in, eg4_input, mystrlen(eg4_input));
     close(in);
@@ -72,16 +72,7 @@ int main(int argc, char *argv[], char *envp[]){
     }
     file[n] = '\0';
     
-    /*2 stage test
-    write(1, t2, mystrlen(t2));
-    write(1, test2, mystrlen(test2));
-    write(1, expected, mystrlen(expected));
-    write(1, test2_result, mystrlen(test2_result));
-    write(1, "\n", 1);
-    write(1, actual, mystrlen(actual));
-    write(1, file, mystrlen(file));
-    write(1, "\n", 1);
-    */
+   
 
     /*3 stage test*/
     write(1, t3, mystrlen(t3));
