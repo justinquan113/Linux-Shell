@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <string.h>
-
+#include "string.h"
 #include "jobs.h"
 #include "parser.h"
 
@@ -128,8 +127,8 @@ void test_single_command(void)
         result == 0 &&
         job.num_stages == 1 &&
         job.pipeline[0].argc == 2 &&
-        strcmp(job.pipeline[0].argv[0], "ls") == 0 &&
-        strcmp(job.pipeline[0].argv[1], "-l") == 0 &&
+        mystrcmp(job.pipeline[0].argv[0], "ls") == 0 &&
+        mystrcmp(job.pipeline[0].argv[1], "-l") == 0 &&
         job.pipeline[0].argv[2] == NULL;
 
     finish_test("Single command", success);
@@ -159,12 +158,12 @@ void test_two_commands(void)
         result == 0 &&
         job.num_stages == 2 &&
         job.pipeline[0].argc == 2 &&
-        strcmp(job.pipeline[0].argv[0], "cat") == 0 &&
-        strcmp(job.pipeline[0].argv[1], "file.txt") == 0 &&
+        mystrcmp(job.pipeline[0].argv[0], "cat") == 0 &&
+        mystrcmp(job.pipeline[0].argv[1], "file.txt") == 0 &&
         job.pipeline[0].argv[2] == NULL &&
         job.pipeline[1].argc == 2 &&
-        strcmp(job.pipeline[1].argv[0], "wc") == 0 &&
-        strcmp(job.pipeline[1].argv[1], "-l") == 0 &&
+        mystrcmp(job.pipeline[1].argv[0], "wc") == 0 &&
+        mystrcmp(job.pipeline[1].argv[1], "-l") == 0 &&
         job.pipeline[1].argv[2] == NULL;
 
     finish_test("Two-command pipeline", success);
@@ -216,9 +215,9 @@ void test_input_redirection(void)
     int success =
         result == 0 &&
         job.infile_path != NULL &&
-        strcmp(job.infile_path, "input.txt") == 0 &&
+        mystrcmp(job.infile_path, "input.txt") == 0 &&
         job.pipeline[0].argc == 1 &&
-        strcmp(job.pipeline[0].argv[0], "sort") == 0;
+        mystrcmp(job.pipeline[0].argv[0], "sort") == 0;
 
     finish_test("Input redirection", success);
 }
@@ -246,10 +245,10 @@ void test_output_redirection(void)
     int success =
         result == 0 &&
         job.outfile_path != NULL &&
-        strcmp(job.outfile_path, "output.txt") == 0 &&
+        mystrcmp(job.outfile_path, "output.txt") == 0 &&
         job.pipeline[0].argc == 2 &&
-        strcmp(job.pipeline[0].argv[0], "echo") == 0 &&
-        strcmp(job.pipeline[0].argv[1], "hello") == 0;
+        mystrcmp(job.pipeline[0].argv[0], "echo") == 0 &&
+        mystrcmp(job.pipeline[0].argv[1], "hello") == 0;
 
     finish_test("Output redirection", success);
 }
@@ -278,8 +277,8 @@ void test_background(void)
         result == 0 &&
         job.background == 1 &&
         job.pipeline[0].argc == 2 &&
-        strcmp(job.pipeline[0].argv[0], "sleep") == 0 &&
-        strcmp(job.pipeline[0].argv[1], "5") == 0;
+        mystrcmp(job.pipeline[0].argv[0], "sleep") == 0 &&
+        mystrcmp(job.pipeline[0].argv[1], "5") == 0;
 
     finish_test("Background command", success);
 }

@@ -59,7 +59,7 @@ int get_command(struct Command *command){
 
         command->argc = tokenizer(input, n, command->argv);
         
-        /* Check for exit using strcmp and break if found,
+        /* Check for exit using mystrcmp and break if found,
         to be removed later*/
         if(mystrcmp("exit", input) == 0){
             break;
