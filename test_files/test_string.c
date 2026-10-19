@@ -71,6 +71,74 @@ int main(void)
         printf("FAIL: mystrcpy empty string\n");
     }
 
+    
+    /* Test myitoa */
+    char buffer[20];
+    char *result;
+
+    total++;
+    result = myitoa(12345, buffer, sizeof(buffer));
+    if (mystrcmp(result, "12345") == 0) {
+        printf("PASS: myitoa positive number\n");
+        passed++;
+    } else {
+        printf("FAIL: myitoa positive number\n");
+    }
+
+    total++;
+    result = myitoa(-123, buffer, sizeof(buffer));
+    if (mystrcmp(result, "-123") == 0) {
+        printf("PASS: myitoa negative number\n");
+        passed++;
+    } else {
+        printf("FAIL: myitoa negative number\n");
+    }
+
+    total++;
+    result = myitoa(0, buffer, sizeof(buffer));
+    if (mystrcmp(result, "0") == 0) {
+        printf("PASS: myitoa zero\n");
+        passed++;
+    } else {
+        printf("FAIL: myitoa zero\n");
+    }
+
+    /* Test mystrcat */
+    char concat_destination[30];
+
+    total++;
+    mystrcpy(concat_destination, "Hello");
+    mystrcat(concat_destination, " World");
+
+    if (mystrcmp(concat_destination, "Hello World") == 0) {
+        printf("PASS: mystrcat joins two strings\n");
+        passed++;
+    } else {
+        printf("FAIL: mystrcat joins two strings\n");
+    }
+
+    total++;
+    mystrcpy(concat_destination, "Hello");
+    mystrcat(concat_destination, "");
+
+    if (mystrcmp(concat_destination, "Hello") == 0) {
+        printf("PASS: mystrcat with empty source\n");
+        passed++;
+    } else {
+        printf("FAIL: mystrcat with empty source\n");
+    }
+
+    total++;
+    mystrcpy(concat_destination, "");
+    mystrcat(concat_destination, "World");
+
+    if (mystrcmp(concat_destination, "World") == 0) {
+        printf("PASS: mystrcat with empty destination\n");
+        passed++;
+    } else {
+        printf("FAIL: mystrcat with empty destination\n");
+    }
+    
     printf("\nString tests: %d/%d passed\n", passed, total);
 
     return passed == total ? 0 : 1;
