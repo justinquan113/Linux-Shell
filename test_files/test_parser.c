@@ -170,7 +170,7 @@ void test_two_commands(void)
 }
 
 
-/* Test that too many pipeline stages are rejected */
+/* Test that too many pipeline stages are accepted */
 void test_three_commands(void)
 {
     struct Job job = {0};
@@ -180,16 +180,37 @@ void test_three_commands(void)
         "wc", "-l"
     };
 
-    printf("\nTest case: Pipeline exceeds maximum stages\n");
+    printf("\nTest case: Three command stage\n");
     print_input(tokens, 8);
 
     setup_tokens(&job, tokens, 8);
 
     int result = parse_pipeline(&job);
 
-    check_value("parser rejects excessive stages", result != 0);
+    check_value("parser accepts three pipeline stages", result == 0);
 
-    finish_test("Reject excessive pipeline stages", result != 0);
+    if (result == 0) {
+        print_pipeline(&job);
+    }
+
+    int success =
+        result == 0 &&
+        job.num_stages == 3 &&
+        job.pipeline[0].argc == 2 &&
+        mystrcmp(job.pipeline[0].argv[0], "cat") == 0 &&
+        mystrcmp(job.pipeline[0].argv[1], "file.txt") == 0 &&
+        job.pipeline[0].argv[2] == NULL &&
+        job.pipeline[1].argc == 2 &&
+        mystrcmp(job.pipeline[1].argv[0], "grep") == 0 &&
+        mystrcmp(job.pipeline[1].argv[1], "hello") == 0 &&
+        job.pipeline[1].argv[2] == NULL &&
+        job.pipeline[2].argc == 2 &&
+        mystrcmp(job.pipeline[2].argv[0], "wc") == 0 &&
+        mystrcmp(job.pipeline[2].argv[1], "-l") == 0 &&
+        job.pipeline[2].argv[2] == NULL;
+
+    finish_test("Three-command pipeline", success);
+
 }
 
 
