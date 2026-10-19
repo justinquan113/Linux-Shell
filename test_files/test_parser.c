@@ -93,6 +93,7 @@ void print_pipeline(const struct Job *job)
 /* Finish a test and print its result */
 void finish_test(const char *name, int condition)
 {
+    printf("%s\n", name);
     if (condition) {
         printf("RESULT: PASS\n");
         passed++;

@@ -17,7 +17,7 @@ test-string: test_files/test_string.c string.c
 test-heap: test_files/test_heap.c myheap.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_heap
 
-test-parser: test_files/test_parser.c jobs.c string.c parser.c prompt.c token.c myheap.c
+test-parser: test_files/test_parser.c jobs.c string.c parser.c prompt.c token.c myheap.c execute.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_parser
 
 #test-job: test_files/test_job.c jobs.c
