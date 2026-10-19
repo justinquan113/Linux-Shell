@@ -59,36 +59,7 @@ char *resolve_path(char *command, char*envp[]) {
             directory = &path_copy[i + 1];
         }
     }
-    return command;
+
+    return 0;
 }
-void run_command(struct Command *command, char *envp[], int background) {
-   
-    pid_t pid = fork();
 
-    if (pid <0) {
-        print_err_string("fork failed in run command");
-    }
-
-    else if (pid == 0) {
-      
-        if (command->argv[0][0] != '/' && command->argv[0][0] != '.') {
-            command-> argv[0] = resolve_path(command->argv[0], envp);
-        }
-
-        execve(command->argv[0], command->argv, envp);
-    
-
-        print_err_string(command->argv[0]);
-        _exit(1);
-    } 
-
-    else {
-        /*skip parent waiting for child process*/
-        if(background == 1){
-            printf("Background PID: %d\n", pid);
-        }
-        else{
-            waitpid(pid, NULL, 0);
-        }
-    }
-}
