@@ -46,7 +46,7 @@ char *resolve_path(char *command, char*envp[]) {
                 // +2 to make space for / and \0
                 char *final_path = alloc(directory_len + command_len + 2);
                 if (final_path != 0) {
-                    mystrcat(final_path, directory);
+                    mystrcpy(final_path, directory);
                     mystrcat(final_path, "/");
                     mystrcat(final_path, command);
 
