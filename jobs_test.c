@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include "string.h"
+#include "mystring.h"
 int main(int argc, char *argv[], char *envp[]){
     
     char *expected = "Expected Result: ";

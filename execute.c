@@ -1,7 +1,7 @@
 #include "execute.h"
 #include "jobs.h"
 #include <unistd.h>
-#include "string.h"
+#include "mystring.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdio.h>

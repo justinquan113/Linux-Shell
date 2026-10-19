@@ -1,6 +1,6 @@
 #include "parser.h"
 #include "jobs.h"
-#include "string.h"
+#include "mystring.h"
 
 #define PIPE "|"
 #define IN_REDIRECT "<"

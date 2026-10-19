@@ -1,5 +1,5 @@
-#ifndef STRING_H
-#define STRING_H
+#ifndef MYSTRING_H
+#define MYSTRING_H
 unsigned int mystrlen(const char *s);
 
 int mystrcmp(const char *s1, const char *s2);
