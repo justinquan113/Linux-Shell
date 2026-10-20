@@ -17,10 +17,10 @@ int tokenizer(char input[], int size, char *tokens[]){
             }
             input[i] = '\0';
             
-            // get size of individual token
+            /* Get size of individual token */
             unsigned int len = mystrlen(start_token);
 
-            // include extra space for null terminator
+            /* Include extra space for null terminator */
             char *token = alloc(len + 1);
 
             if (token != 0) {
