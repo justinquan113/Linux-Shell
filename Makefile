@@ -26,13 +26,19 @@ test-execution: test_files/test_execution.c execute.c mystring.c myheap.c
 test-job: test_files/test_job.c jobs.c mystring.c parser.c prompt.c token.c execute.c myheap.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_job
 	
-test: test-string test-heap test-tokenizer test-parser test-job test-execution
+test: test-string test-heap test-tokenizer test-parser test-job test-execution test-run_job
+
+test-run_job: test_files/test_run_job.c jobs.c mystring.c parser.c prompt.c token.c myheap.c execute.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_run_job
+	
+test: test-string test-heap test-tokenizer test-parser test-run_job
 	./test_string
 	./test_heap
 	./test_tokenizer
 	./test_parser
 	./test_job
 	./test_execution
+	./test_run_job
 
 tokentest: tokenizer_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
@@ -71,6 +77,6 @@ parser.o: parser.c parser.h jobs.h mystring.h
 	$(CC) $(CFLAGS) -c parser.c
 
 clean:
-	rm -f mysh test_string test_heap test_tokenizer test_parser test_job test_execution tokentest stringtest jobtest test *.o *.exe
+	rm -f mysh test_string test_heap test_tokenizer test_parser test_job test_execution test_run_job tokentest stringtest jobtest test *.o *.exe
 
-.PHONY: all clean
+.PHONY: all clean test run-job

@@ -1,5 +1,0 @@
-bin1
-lib
-bin2
-usr
-bin3

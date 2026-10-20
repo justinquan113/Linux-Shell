@@ -406,6 +406,7 @@ int main(void)
     test_missing_filename();
 
     printf("\nParser tests: %d/%d passed\n", passed, total);
+    printf("\n");
 
     return passed == total ? 0 : 1;
 }
