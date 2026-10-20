@@ -10,7 +10,6 @@ all: mysh
 mysh: mysh.o $(OBJS)
 	$(CC) $(CFLAGS) -o mysh mysh.o $(OBJS)
 
-# Build every test binary, then run them
 test: $(TESTS)
 	./test_string
 	./test_heap
@@ -20,8 +19,6 @@ test: $(TESTS)
 	./test_execution
 	./test_run_job
 
-# Link each test binary from objects (keeps debug info in the .o files,
-# so clang has no reason to emit a standalone .dSYM bundle)
 test_string: test_string.o mystring.o
 	$(CC) $(CFLAGS) -o test_string $^
 
@@ -43,7 +40,6 @@ test_execution: test_execution.o execute.o mystring.o myheap.o
 test_run_job: test_run_job.o jobs.o mystring.o parser.o prompt.o token.o myheap.o execute.o
 	$(CC) $(CFLAGS) -o test_run_job $^
 
-# Test objects. Sources live in test_files/, objects land here in the root.
 test_string.o: test_files/test_string.c mystring.h
 	$(CC) $(CFLAGS) -c test_files/test_string.c
 
@@ -89,7 +85,6 @@ token.o: token.c token.h mystring.h myheap.h
 parser.o: parser.c parser.h jobs.h mystring.h
 	$(CC) $(CFLAGS) -c parser.c
 
-# Old hyphenated target names, kept as aliases
 test-string: test_string
 test-heap: test_heap
 test-tokenizer: test_tokenizer
