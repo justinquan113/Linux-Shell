@@ -2,6 +2,6 @@
 #define MY_HEAP_H
 
 char *alloc(unsigned int size);
-void free_all();
+void free_all(void);
 
 #endif

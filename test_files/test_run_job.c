@@ -33,7 +33,7 @@ int main(int argc, char *argv[], char *envp[]){
 void test_3_stage_pipeline(char *envp[]){
     printf("Test case: 3 stage pipeline\n");
     printf("Test input: echo hello world | tr a-z A-Z | rev > runjob_test4.txt\n");
-    char *file[50];
+    char file[50];
     struct Job test4 =
         {
         { { { "echo", "hello world", NULL }, 2 },

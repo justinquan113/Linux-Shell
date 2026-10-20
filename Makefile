@@ -40,20 +40,8 @@ test: test-string test-heap test-tokenizer test-parser test-run_job
 	./test_execution
 	./test_run_job
 
-tokentest: tokenizer_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
-
-jobtest: jobs_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o jobtest jobs_test.o $(OBJS)
-
 mysh.o: mysh.c mystring.h jobs.h execute.h prompt.h
 	$(CC) $(CFLAGS) -c mysh.c
-
-tokenizer_test.o: tokenizer_test.c prompt.h token.h
-	$(CC) $(CFLAGS) -c tokenizer_test.c
-
-jobs_test.o: jobs.h jobs.c jobs_test.c
-	$(CC) $(CFLAGS) -c jobs_test.c
 
 jobs.o: jobs.c jobs.h mystring.h token.h prompt.h
 	$(CC) $(CFLAGS) -c jobs.c
@@ -77,6 +65,6 @@ parser.o: parser.c parser.h jobs.h mystring.h
 	$(CC) $(CFLAGS) -c parser.c
 
 clean:
-	rm -f mysh test_string test_heap test_tokenizer test_parser test_job test_execution test_run_job tokentest stringtest jobtest test *.o *.exe
+	rm -f mysh test_string test_heap test_tokenizer test_parser test_job test_execution test_run_job test *.o *.exe
 
 .PHONY: all clean test run-job
