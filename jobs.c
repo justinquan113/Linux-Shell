@@ -228,7 +228,7 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
 
     else if(pid == 0){
 
-        /*redirect the infile fd to stdin*/
+        /*redirect the stdin to point to where infile fd points to*/
         if(in_fd != STDIN_FILENO){
             if (dup2(in_fd, STDIN_FILENO) < 0) {
                 print_err_string("dup2 stdin failed");
@@ -238,7 +238,7 @@ int spawn_child_process(struct Command *command, int in_fd, int out_fd, int clos
             }
         }
 
-        /*redirect the outfile fd to stdout*/
+        /*redirect the stdout to point to where outfile fd points to*/
         if(out_fd != STDOUT_FILENO){
             if (dup2(out_fd, STDOUT_FILENO) < 0) {
                 print_err_string("dup2 stdout failed");
