@@ -52,7 +52,7 @@ int get_command(struct Command *command){
         /* Replace newline with null terminator to properly compare*/
         input[n-1] = '\0';
         
-        // Ignore empty input
+        /* Ignore empty input */
         if (input[0] == '\0'){
             continue;
         }

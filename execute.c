@@ -18,18 +18,21 @@ char *resolve_path(char *command, char*envp[]) {
         for (int i = 0; envp[i] != 0; i++) {
             if (envp[i][0] == 'P' && envp[i][1] == 'A'  && envp[i][2] == 'T'
                 && envp[i][3] == 'H' && envp[i][4] == '=') {
-                    path = envp[i] + 5; // *path will now point to the string after PATH=
+                    path = envp[i] + 5; /* *path will now point to the string after PATH= */
                 }
         }
     }
 
-    // just in case PATH= is not found, this is the default
+    /* just in case PATH= is not found, this is the default */
     if (path == 0) {
         path = "/bin";
     }
 
     unsigned int path_len = mystrlen(path);
     char *path_copy = alloc(path_len + 1);
+    if (path_copy == 0) {
+        return 0;
+    }
     
     mystrcpy(path_copy, path);
 
@@ -38,12 +41,12 @@ char *resolve_path(char *command, char*envp[]) {
 
     for (unsigned int i = 0; i <= path_len; i++) {
         if (path_copy[i] == ':' || path_copy[i] == '\0') {
-            path_copy[i] = '\0'; // separate by \0 instead of :
+            path_copy[i] = '\0'; /* separate by \0 instead of : */
 
             if (directory[0] != '\0') {
                 unsigned int directory_len = mystrlen(directory);
 
-                // +2 to make space for / and \0
+                /* +2 to make space for / and \0 */
                 char *final_path = alloc(directory_len + command_len + 2);
                 if (final_path != 0) {
                     mystrcpy(final_path, directory);

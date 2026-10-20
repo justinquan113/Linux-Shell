@@ -78,7 +78,7 @@ char *mystrcat(char *dest, const char*src) {
     int i = 0;
     int j = 0;
 
-    // go to end of the destination string
+    /* Go to end of the destination string */
     while (dest[i] != '\0') {
         i++;
     }

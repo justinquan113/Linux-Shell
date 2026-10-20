@@ -20,15 +20,19 @@ test-heap: test_files/test_heap.c myheap.c
 test-parser: test_files/test_parser.c jobs.c mystring.c parser.c prompt.c token.c myheap.c execute.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_parser
 
-#test-job: test_files/test_job.c jobs.c
-#$(CC) $(CFLAGS)  -I. $^ -o test_job
+test-execution: test_files/test_execution.c execute.c mystring.c myheap.c
+	$(CC) $(CFLAGS)	-I. $^ -o test_execution
+
+test-job: test_files/test_job.c jobs.c mystring.c parser.c prompt.c token.c execute.c myheap.c
+	$(CC) $(CFLAGS)  -I. $^ -o test_job
 	
-#Need to add test for jobs.c
-test: test-string test-heap test-tokenizer test-parser
+test: test-string test-heap test-tokenizer test-parser test-job test-execution
 	./test_string
 	./test_heap
 	./test_tokenizer
 	./test_parser
+	./test_job
+	./test_execution
 
 tokentest: tokenizer_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o tokentest tokenizer_test.o $(OBJS)
@@ -73,6 +77,6 @@ parser.o: parser.c parser.h jobs.h mystring.h
 	$(CC) $(CFLAGS) -c parser.c
 
 clean:
-	rm -f mysh test_string test_heap test_tokenizer test_parser tokentest stringtest jobtest *.o
+	rm -f mysh test_string test_heap test_tokenizer test_parser test_job test_execution tokentest stringtest jobtest test *.o *.exe
 
 .PHONY: all clean

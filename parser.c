@@ -12,7 +12,9 @@
 /* Currently assumes there will be a space within instructions eg. "ls -l | grep .c"  not "ls -l|grep .c" */
 int parse_pipeline(struct Job *job)
 {
+    /* Point to array of commands*/
     struct Command *cmd = &job->pipeline[0];
+    /* Points to the command */
     char **ptr = cmd->argv;
 
     job->num_stages = 1;
