@@ -22,16 +22,7 @@ test-parser: test_files/test_parser.c jobs.c mystring.c parser.c prompt.c token.
 
 test-run_job: test_files/test_run_job.c jobs.c mystring.c parser.c prompt.c token.c myheap.c execute.c
 	$(CC) $(CFLAGS)  -I. $^ -o test_run_job
-
-# build and run just this one suite
-run-job: test-run_job
-	./test_run_job
-
-
-#test-job: test_files/test_job.c jobs.c
-#$(CC) $(CFLAGS)  -I. $^ -o test_job
 	
-#Need to add test for jobs.c
 test: test-string test-heap test-tokenizer test-parser test-run_job
 	./test_string
 	./test_heap
@@ -45,9 +36,6 @@ tokentest: tokenizer_test.o $(OBJS)
 stringtest: string_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o stringtest string_test.o $(OBJS)
 
-jobtest: jobs_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o jobtest jobs_test.o $(OBJS)
-
 mysh.o: mysh.c mystring.h jobs.h execute.h prompt.h
 	$(CC) $(CFLAGS) -c mysh.c
 
@@ -56,9 +44,6 @@ tokenizer_test.o: tokenizer_test.c prompt.h token.h
 
 string_test.o: mystring.h mystring.c string_test.c
 	$(CC) $(CFLAGS) -c string_test.c
-
-jobs_test.o: jobs.h jobs.c jobs_test.c
-	$(CC) $(CFLAGS) -c jobs_test.c
 
 jobs.o: jobs.c jobs.h mystring.h token.h prompt.h
 	$(CC) $(CFLAGS) -c jobs.c

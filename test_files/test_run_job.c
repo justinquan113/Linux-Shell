@@ -22,6 +22,9 @@ int main(int argc, char *argv[], char *envp[]){
     test_input_redirection_pipeline(envp);
     printf("\n");
     test_3_stage_pipeline(envp);
+    printf("\n");
+    
+    
 
 
     return 0;
